@@ -1,0 +1,11 @@
+version: '3'
+services:
+  employee:
+    # from local dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ENV_FILE=~/.env
+    volumes:
+      - ~/.env:/.env
