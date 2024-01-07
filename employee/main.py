@@ -3,6 +3,9 @@ import fastapi
 from pydantic import BaseModel
 import note
 from .interface import run_query
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Text(BaseModel):
     text: str
@@ -15,15 +18,15 @@ def api(text: Text):
 
 def run(text: str = None):
     if text is not None:
-        note.main.write_new_note(text)
-
-    run_query(input("Communication:"))
+        return run_query(text)
+        #note.main.write_new_note(text)
+    return run_query(input("Communication:"))
     
 
 def serve():
     import uvicorn
     import os
-    uvicorn.run(app, port=os.environ["PORT"])
+    uvicorn.run(app, port=int(os.environ["PORT"]))
 
 def cli():
     """CLI entry point."""
