@@ -10,11 +10,17 @@ load_dotenv()
 
 app = fastapi.FastAPI()
 
+mailbox = MailBox()
+
 @app.post("/api")
 def api(message_in: Message):
     message_in.time_received = get_time()
-    message_in.save()
+    node = mailbox.new_node()
+    node.write(str(message_in))
+    message_in.save(mailbox)
     message_out = do_work(message_in)
+    node = mailbox.new_node()
+    node.write(str(message_out))
     return message_out
 
 def run_interactive():
@@ -22,16 +28,16 @@ def run_interactive():
         content = input(">>> ")
         if content == "exit":
             break
-        message = Message.new(MailBox())
+
         message = Message(
             content=content,
             sender="manager",
             subject="inquiry",
             time_sent=get_time(),
-            repo=message.repo,
-            index=message.index
+            time_received=get_time(),
         )
-        message.save()
+        email = mailbox.new_mail(message)
+        email.write(str(message))
         response = do_work(message)
         print(f"final response: {response.content}")
 
