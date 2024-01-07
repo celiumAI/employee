@@ -6,8 +6,8 @@ from langchain.embeddings.ollama import OllamaEmbeddings
 from langchain.chains import HypotheticalDocumentEmbedder
 from langchain_community.vectorstores import Chroma
 from langchain.memory import ConversationSummaryMemory
-from .mail import Message, MailBox
-from note.model import Node
+from .mail import Message
+from note.model import Node, Repository
 
 from langchain.tools import tool
 
@@ -113,7 +113,7 @@ def ask(inquiry: str) -> str:
     return llm(inquiry + result)
 
 
-def get_context(nodes: list[Node], inquiry: str) -> str:
+def get_context(nodes: list[Message], inquiry: str) -> str:
     """
     Get check past conversations for context.
     We have a lot of information that can be used to answer questions.
@@ -164,7 +164,9 @@ def do_work(assignment: str) -> str:
         allow_delegation=True
     )
 
-    mailbox = MailBox()
+    mailbox = Repository()
+    print(mailbox)
+    print(mailbox.nodes)
     context = get_context(mailbox.nodes, assignment)
 
     task = Task(

@@ -5,6 +5,7 @@ from .work import do_work
 from dotenv import load_dotenv
 from .mail import Message, MailBox
 from .utils import get_time
+from note.main import write_new_note
 
 load_dotenv()
 
@@ -15,12 +16,12 @@ mailbox = MailBox()
 @app.post("/api")
 def api(message_in: Message):
     message_in.time_received = get_time()
-    node = mailbox.new_node()
-    node.write(str(message_in))
+    email = mailbox.new_mail(message_in)
+    email.write(str(message_in))
     message_in.save(mailbox)
     message_out = do_work(message_in)
-    node = mailbox.new_node()
-    node.write(str(message_out))
+    message_out.time_sent = get_time()
+    email = mailbox.new_mail(message_out)
     return message_out
 
 def run_interactive():
@@ -38,6 +39,7 @@ def run_interactive():
         )
         email = mailbox.new_mail(message)
         email.write(str(message))
+        write_new_note(str(message))
         response = do_work(message)
         print(f"final response: {response.content}")
 

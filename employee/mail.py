@@ -19,16 +19,14 @@ class Message(BaseModel):
     receivers: list[str] = [os.environ["ID"]]
     subject: str
     content: str
-    time_sent: int = get_time()
-    time_received: int = None
+    timestamp: str = get_time()
 
     def __str__(self):
         frontmatter = yaml.dump({
             "sender": self.sender,
             "receivers": self.receivers,
             "subject": self.subject,
-            "time_sent": self.time_sent,
-            "time_received": self.time_received,
+            "timestamp": self.timestamp,
         })
         return f"---\n{frontmatter}---\n{self.content}"
     
