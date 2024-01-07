@@ -23,7 +23,7 @@ def run(text: str = None):
 def serve():
     import uvicorn
     import os
-    uvicorn.run(app, host=os.environ["HOST"], port=os.environ["PORT"])
+    uvicorn.run(app, port=os.environ["PORT"])
 
 def cli():
     """CLI entry point."""

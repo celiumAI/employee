@@ -1,11 +1,17 @@
 version: '3'
 services:
   employee:
-    # from local dockerfile
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - PORT=8300
+        - URL_REPO=http://192.168.2.177:8080/mcfrank/employee
     environment:
-      - ENV_FILE=~/.env
-    volumes:
-      - ~/.env:/.env
+      - PORT=8300
+      - URL_REPO=http://192.168.2.177:8080/mcfrank/employee
+    networks:
+      - mycelium
+networks:
+  mycelium:
+    driver: bridge

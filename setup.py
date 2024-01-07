@@ -11,6 +11,7 @@ setup(
     },
     install_requires=[
         'fire',
+        'fastapi',
     ],
     author='Martin Christoph Frank',
     author_email='martinchristophfrank@gmail.com',

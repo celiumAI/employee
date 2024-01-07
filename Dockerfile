@@ -7,9 +7,11 @@ RUN apk update && apk add --no-cache git py-pip
 # Set the working directory
 WORKDIR /app
 
+ARG URL_REPO
+ENV URL_REPO=${URL_REPO}
+
 # Clone the Git repository
-ARG REPO_URL
-RUN git clone $REPO_URL .
+RUN git clone ${URL_REPO} .
 
 # Install the application with pip
 RUN pip install -e .
